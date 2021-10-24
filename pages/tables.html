@@ -42,6 +42,143 @@
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
+                   <!-- Modal -->
+<div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+  <div class="modal-content">
+  <div class="modal-header">
+  <h5 class="modal-title" style="color: #000;" id="itemModalLabel">Resgatar Item</h5>
+  <button type="button" class="close" onclick="location.reload();" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  <div class="modal-body" id="bodyModal">
+  </div>
+  <div class="modal-footer">
+  <input type="hidden" id="itemId">
+  <button type="button" class="btn btn-secondary" onclick="location.reload();">Close</button>
+  <button type="button" class="btn btn-success" onclick="confirmRedeem();" id="btnConfirm" style="display: none;">Confirmar</button>
+  </div>
+  </div>
+  </div>
+  </div>
+  <!--  End Modal -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+  <script>
+
+async function CopyTextVer() {
+  /* Get the text field */
+  var copyText = document.getElementById("LoginImp");
+  console.log(document.getElementById("follows"))
+  var absd = document.getElementById("follows")
+     console.log(absd.innerHTML)
+     document.getElementById("follows").innerHTML="followcount";
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+   /* Copy the text inside the text field */
+   console.log(copyText)
+   await navigator.clipboard.writeText(copyText.value);
+  var clipboard = new ClipboardJS('#LoginImp');
+  clipboard.on('success', function (e) {
+        console.log(e);
+      });
+
+      clipboard.on('error', function (e) {
+        console.log(e);
+      });
+
+  /* Alert the copied text */
+  alert("Copiado!: " + copyText.value);
+}
+    async function loginmodal (itemId) {
+    idsd = ""  
+        if (typeof(Storage) !== "undefined") {
+// Store
+//localStorage.setItem("lolid", "Smith");
+// Retrieve
+idsd = document.cookie[0]
+} else {
+return //document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+        $('#bodyModal').html('');
+        $('#itemId').val(itemId);
+        $('#btnConfirm').hide();
+        console.log(document.cookie[0])
+        console.log(idsd)
+        
+
+
+
+        await fetch("https://aidenbotapi.herokuapp.com/speak.ferhacks2.my.id:7090/newver", {
+                method: "POST",
+                headers:{
+                "Content-Type" :"application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    "lolid": localStorage.getItem("getid")
+                })
+            }).then(function(response) {
+            //console.log(response)
+            //console.log(response.json())
+            return response.json();
+        }).then(function(data) {
+            globalThis.usermyid = data.verification_code
+            //console.log("LOL1")
+            //console.log(data)
+            if (data.user_id != 0) {
+                if (data.item_id != 0) {
+                    if (parseInt(data.amount) > 0) {
+                        //console.log("LOL2")
+                        if (parseInt(data.user_points) >= parseInt(data.points)) {
+                            $('#btnConfirm').show();
+                            var balance = parseInt(data.user_points)-parseInt(data.points);
+                            $('#bodyModal').html('<div style="margin-bottom: 5px; min-height: 100px;"><img src="'+data.thumbnail+'" align="left" style="height: 95px; border: solid 1px #000; border-radius: 8px; margin-right:5px;"> <strong>'+data.user_nickname+'</strong><br> #'+data.user_id+'<br><span style="color: #000;">Tienes <strong>'+data.user_points+'</strong> Puntos, Si lo canjeas ahora, te quedaras con <strong>'+balance+'</strong> Puntos.</span><br><textarea name="observation" id="observation" style="width: 100%; height: 100px; margin-top: 5px;" placeholder="Ingrese la información que necesitará para recibir su artículo. Ejemplo: su Instagram, personaje del juego o ID de FreeFire."></textarea><br><div id="errorFilter"></div></div>');
+                        } else {
+                            $('#bodyModal').html('<div class="alert alert-danger">No tienes suficientes puntos para canjear esto, el item cuesta <strong>'+data.points+'</strong> puntos y tienes <strong>'+data.user_points+'</strong> Puntos.</div><div style="margin-bottom: 5px; height: 85px;"><img src="'+data.thumbnail+'" align="left" style="height: 80px; border: solid 1px #000; border-radius: 8px; margin-right:5px;"> <strong>'+data.user_nickname+'</strong><br> #'+data.user_id+'<br><span style="color: #000;">Você tem <strong>'+data.user_points+'</strong> pontos nesse canal.</span></div>');
+                        }
+                    } else {
+                        $('#bodyModal').html('<div class="alert alert-danger">O item não está mais disponível.</div><div style="margin-bottom: 5px; height: 85px;"><img src="'+data.thumbnail+'" align="left" style="height: 80px; border: solid 1px #000; border-radius: 8px; margin-right:5px;"> <strong>'+data.user_nickname+'</strong><br> #'+data.user_id+'<br><span style="color: #000;">Você tem <strong>'+data.user_points+'</strong> pontos nesse canal.</span></div>');
+                    }
+                } else {
+                    $('#bodyModal').html('<div class="alert alert-danger">Ocorreu um erro. Atualize a página e tente novamente!</div>');
+                }
+            } else {
+                $('#bodyModal').html('<div class="alert alert-warning">Envie el comando de abajo y luego pulse en VERIFICAR.<br><hr><div style="background-color: bisque;border: solid 1px;padding: 5px;"><strong><input type="text" value="!login '+data.verification_code+'"id="LoginImp" readonly></strong><input type="hidden" value="!login '+data.verification_code+'" name="fieldName" id="hiddencopy" /></div><hr><input type="button" onclick="login();" value="VERIFICAR"><input type="button" onclick="CopyTextVer();" value="COPIAR TEXTO"></div><div id="errorFilter"></div>');
+            }
+            
+            $('#itemModal').modal('show');
+        });
+    }
+        
+    function login () {
+        var itemId = $('#itemId').val();
+        fetch('https://aidenbotapi.herokuapp.com/speak.ferhacks2.my.id:7090/newver',{                    method: "POST",
+                headers:{
+                "Content-Type" :"application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    "lolid": usermyid
+                })}).then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            if (data.user_id != 0) {
+              console.log(data)
+                localStorage.setItem("getid", usermyid);
+                console.log(usermyid)
+                document.cookie = `getid=${usermyid}`;
+                alert("Bienvenido" + data.user_nickname)
+                location.reload();
+            } else {
+                $('#errorFilter').html('<div class="alert alert-danger">Envia el comando en el directo!</div>');
+            }
+        });
+    }
+</script>
+<script>if (document.cookie[0] == undefined) loginmodal("0");
+  </script>
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -795,143 +932,7 @@ const myid = {}
     }
     
   </script>
-                 <!-- Modal -->
-<div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-  <div class="modal-content">
-  <div class="modal-header">
-  <h5 class="modal-title" style="color: #000;" id="itemModalLabel">Resgatar Item</h5>
-  <button type="button" class="close" onclick="location.reload();" aria-label="Close">
-  <span aria-hidden="true">&times;</span>
-  </button>
-  </div>
-  <div class="modal-body" id="bodyModal">
-  </div>
-  <div class="modal-footer">
-  <input type="hidden" id="itemId">
-  <button type="button" class="btn btn-secondary" onclick="location.reload();">Close</button>
-  <button type="button" class="btn btn-success" onclick="confirmRedeem();" id="btnConfirm" style="display: none;">Confirmar</button>
-  </div>
-  </div>
-  </div>
-  </div>
-  <!--  End Modal -->
-  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
-  <script>
 
-async function CopyTextVer() {
-  /* Get the text field */
-  var copyText = document.getElementById("LoginImp");
-  console.log(document.getElementById("follows"))
-  var absd = document.getElementById("follows")
-     console.log(absd.innerHTML)
-     document.getElementById("follows").innerHTML="followcount";
-
-  /* Select the text field */
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); /* For mobile devices */
-
-   /* Copy the text inside the text field */
-   console.log(copyText)
-   await navigator.clipboard.writeText(copyText.value);
-  var clipboard = new ClipboardJS('#LoginImp');
-  clipboard.on('success', function (e) {
-        console.log(e);
-      });
-
-      clipboard.on('error', function (e) {
-        console.log(e);
-      });
-
-  /* Alert the copied text */
-  alert("Copiado!: " + copyText.value);
-}
-    async function loginmodal (itemId) {
-    idsd = ""  
-        if (typeof(Storage) !== "undefined") {
-// Store
-//localStorage.setItem("lolid", "Smith");
-// Retrieve
-idsd = document.cookie[0]
-} else {
-return //document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
-}
-        $('#bodyModal').html('');
-        $('#itemId').val(itemId);
-        $('#btnConfirm').hide();
-        console.log(document.cookie[0])
-        console.log(idsd)
-        
-
-
-
-        await fetch("http://speak.ferhacks2.my.id:7090/newver", {
-                method: "POST",
-                headers:{
-                "Content-Type" :"application/json; charset=utf-8"
-                },
-                body: JSON.stringify({
-                    "lolid": localStorage.getItem("getid")
-                })
-            }).then(function(response) {
-            //console.log(response)
-            //console.log(response.json())
-            return response.json();
-        }).then(function(data) {
-            globalThis.usermyid = data.verification_code
-            //console.log("LOL1")
-            //console.log(data)
-            if (data.user_id != 0) {
-                if (data.item_id != 0) {
-                    if (parseInt(data.amount) > 0) {
-                        //console.log("LOL2")
-                        if (parseInt(data.user_points) >= parseInt(data.points)) {
-                            $('#btnConfirm').show();
-                            var balance = parseInt(data.user_points)-parseInt(data.points);
-                            $('#bodyModal').html('<div style="margin-bottom: 5px; min-height: 100px;"><img src="'+data.thumbnail+'" align="left" style="height: 95px; border: solid 1px #000; border-radius: 8px; margin-right:5px;"> <strong>'+data.user_nickname+'</strong><br> #'+data.user_id+'<br><span style="color: #000;">Tienes <strong>'+data.user_points+'</strong> Puntos, Si lo canjeas ahora, te quedaras con <strong>'+balance+'</strong> Puntos.</span><br><textarea name="observation" id="observation" style="width: 100%; height: 100px; margin-top: 5px;" placeholder="Ingrese la información que necesitará para recibir su artículo. Ejemplo: su Instagram, personaje del juego o ID de FreeFire."></textarea><br><div id="errorFilter"></div></div>');
-                        } else {
-                            $('#bodyModal').html('<div class="alert alert-danger">No tienes suficientes puntos para canjear esto, el item cuesta <strong>'+data.points+'</strong> puntos y tienes <strong>'+data.user_points+'</strong> Puntos.</div><div style="margin-bottom: 5px; height: 85px;"><img src="'+data.thumbnail+'" align="left" style="height: 80px; border: solid 1px #000; border-radius: 8px; margin-right:5px;"> <strong>'+data.user_nickname+'</strong><br> #'+data.user_id+'<br><span style="color: #000;">Você tem <strong>'+data.user_points+'</strong> pontos nesse canal.</span></div>');
-                        }
-                    } else {
-                        $('#bodyModal').html('<div class="alert alert-danger">O item não está mais disponível.</div><div style="margin-bottom: 5px; height: 85px;"><img src="'+data.thumbnail+'" align="left" style="height: 80px; border: solid 1px #000; border-radius: 8px; margin-right:5px;"> <strong>'+data.user_nickname+'</strong><br> #'+data.user_id+'<br><span style="color: #000;">Você tem <strong>'+data.user_points+'</strong> pontos nesse canal.</span></div>');
-                    }
-                } else {
-                    $('#bodyModal').html('<div class="alert alert-danger">Ocorreu um erro. Atualize a página e tente novamente!</div>');
-                }
-            } else {
-                $('#bodyModal').html('<div class="alert alert-warning">Envie el comando de abajo y luego pulse en VERIFICAR.<br><hr><div style="background-color: bisque;border: solid 1px;padding: 5px;"><strong><input type="text" value="!login '+data.verification_code+'"id="LoginImp" readonly></strong><input type="hidden" value="!login '+data.verification_code+'" name="fieldName" id="hiddencopy" /></div><hr><input type="button" onclick="login();" value="VERIFICAR"><input type="button" onclick="CopyTextVer();" value="COPIAR TEXTO"></div><div id="errorFilter"></div>');
-            }
-            
-            $('#itemModal').modal('show');
-        });
-    }
-        
-    function login () {
-        var itemId = $('#itemId').val();
-        fetch('http://speak.ferhacks2.my.id:7090/newver',{                    method: "POST",
-                headers:{
-                "Content-Type" :"application/json; charset=utf-8"
-                },
-                body: JSON.stringify({
-                    "lolid": usermyid
-                })}).then(function(response) {
-            return response.json();
-        }).then(function(data) {
-            if (data.user_id != 0) {
-              console.log(data)
-                localStorage.setItem("getid", usermyid);
-                console.log(usermyid)
-                document.cookie = `getid=${usermyid}`;
-                alert("Bienvenido" + data.user_nickname)
-                location.reload();
-            } else {
-                $('#errorFilter').html('<div class="alert alert-danger">Envia el comando en el directo!</div>');
-            }
-        });
-    }
-</script>
-<script>if (document.cookie[0] == undefined) loginmodal("0");
-  </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->

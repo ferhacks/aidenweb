@@ -4,7 +4,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-:root {
+ :root {
   --bs-blue: #63B3ED;
   --bs-indigo: #596CFF;
   --bs-purple: #6f42c1;
@@ -66,7 +66,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   margin-bottom: 0.5rem;
   font-weight: 400;
   line-height: 1.2;
-  color: #344767; }
+  color: #67748e; }
 
 h1, .h1 {
   font-size: calc(1.425rem + 2.1vw); }
@@ -3595,7 +3595,7 @@ textarea.form-control-lg {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: #ffa900;
   background-clip: border-box;
   border: 0 solid rgba(0, 0, 0, 0.125);
   border-radius: 1rem; }
@@ -3640,14 +3640,14 @@ textarea.form-control-lg {
 .card-header {
   padding: 0.5rem 1rem;
   margin-bottom: 0;
-  background-color: #fff;
+  background-color: #ffa900;
   border-bottom: 0 solid rgba(0, 0, 0, 0.125); }
   .card-header:first-child {
     border-radius: 1rem 1rem 0 0; }
 
 .card-footer {
   padding: 0.5rem 1rem;
-  background-color: #fff;
+  background-color: #ffa900;
   border-top: 0 solid rgba(0, 0, 0, 0.125); }
   .card-footer:last-child {
     border-radius: 0 0 1rem 1rem; }
@@ -6912,7 +6912,7 @@ textarea.form-control-lg {
   color: #ea0606 !important; }
 
 .text-light {
-  color: #e9ecef !important; }
+  color: #ffffff !important; }
 
 .text-dark {
   color: #344767 !important; }
@@ -6969,7 +6969,7 @@ textarea.form-control-lg {
   background-color: transparent !important; }
 
 .bg-gray-100 {
-  background-color: #f8f9fa !important; }
+  background-color: #26272a !important; }
 
 .bg-gray-200 {
   background-color: #e9ecef !important; }
@@ -13143,7 +13143,7 @@ hr.horizontal {
 .navbar {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.16); }
   .navbar .navbar-brand {
-    color: #344767;
+    color: #ffa900;
     font-size: 0.875rem; }
   .navbar .nav-link {
     color: #344767;
@@ -13770,12 +13770,12 @@ hr.horizontal {
 
 .navbar-vertical .navbar-nav > .nav-item .nav-link.active {
   color: #344767;
-  background-color: #fff; }
+  background-color: #ffa900; }
   .navbar-vertical .navbar-nav > .nav-item .nav-link.active .icon {
-    background-image: linear-gradient(310deg, #cb0c9f 0%, #cb0c9f 100%); }
+    background-image: linear-gradient(310deg, #f0680d 0%, #f0680d 100%); }
     .navbar-vertical .navbar-nav > .nav-item .nav-link.active .icon svg .color-background,
     .navbar-vertical .navbar-nav > .nav-item .nav-link.active .icon svg .color-foreground {
-      fill: #fff; }
+      fill: #ffa900; }
 
 .navbar-main {
   transition: box-shadow 0.25s ease-in, background-color 0.25s ease-in; }
